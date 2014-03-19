@@ -2,25 +2,27 @@ luke.skew.test <- function(p.values, reps = 100000)
 {
   p.values <- p.values[which(p.values > 0.03 & p.values < 0.05)]
   n <- length(p.values)
-
-  observed.skew <- (mean(p.values) - median(p.values)) / sd(p.values)
- 
- # Now find distribution of the expected skew, giving sampling error with n samples
+  
+  observed.skew <- (mean(p.values) - median(p.values)) #/ sd(p.values)
+  
+  # Now find distribution of the expected skew, giving sampling error with n samples
   rand <- matrix(runif(reps*n, min = 0.03, max = 0.05), ncol = n, nrow = reps) # fully vectorised!
   means <- rowMeans(rand)
   medians <- apply(rand,1,median)
-  sds <- apply(rand, 1, sd)
-  boot.skew <- (means - medians) / sds
+  #sds <- apply(rand, 1, sd)
+  
+  boot.skew <- (means - medians) #/ sds
   quantiles <- quantile(boot.skew, probs = c(0.025, 0.975))
- 
- # One-tailed p value
+  
+  # One-tailed p value
   p.null <- length(boot.skew[boot.skew < observed.skew]) / reps
-
-  print(paste("Expected skew is 0.5, with 95% CIs of ", quantiles[1], " to ", quantiles[2], ", given that we have ", n, "p values in the range 0.03-0.05.", sep=""))
-  print("Observed skew is ", observed.skew, ", which has a probability of ", p.null, "under the null hypothesis of no p-hacking, with an effect size of zero.", sep="")
+  
+  cat(paste("Expected skew is 0, with 95% CIs of ", round(quantiles[1],3), " to ", round(quantiles[2],3), ", given that we have ", n, " p values in the range 0.03-0.05.", "\n",
+  "Observed skew is ", round(observed.skew,3), ", which has a probability of ", p.null, " under the null hypothesis of no p-hacking, with an effect size of zero.", "\n", sep=""))
   
   # To do: add a histogram of the boot values with a little arrow on it showing the observed skew level, like this: http://stackoverflow.com/questions/11122002/how-do-i-draw-an-arrow-on-a-histogram-drawn-using-ggplot2
 }
+
 
 
 
