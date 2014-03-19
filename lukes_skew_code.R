@@ -1,4 +1,3 @@
-
 luke.skew.test <- function(p.values, reps = 100000)
 {
   p.values <- p.values[which(p.values > 0.03 & p.values < 0.05)]
@@ -18,7 +17,7 @@ luke.skew.test <- function(p.values, reps = 100000)
   p.null <- length(boot.skew[boot.skew < observed.skew]) / reps
 
   print(paste("Expected skew is 0.5, with 95% CIs of ", quantiles[1], " to ", quantiles[2], ", given that we have ", n, "p values in the range 0.03-0.05.", sep=""))
-  print("Observed skew is ", observed.skew, ", which has a probability of ", p.null, "under the null hypothesis of no p-hacking, with an effect size of zero." sep="")
+  print("Observed skew is ", observed.skew, ", which has a probability of ", p.null, "under the null hypothesis of no p-hacking, with an effect size of zero.", sep="")
   
   # To do: add a histogram of the boot values with a little arrow on it showing the observed skew level, like this: http://stackoverflow.com/questions/11122002/how-do-i-draw-an-arrow-on-a-histogram-drawn-using-ggplot2
 }
